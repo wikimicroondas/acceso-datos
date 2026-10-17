@@ -1,4 +1,4 @@
-package ficheros;
+package com.whisky.apuntes;
 
 import java.io.*;
 import java.nio.file.FileAlreadyExistsException;
