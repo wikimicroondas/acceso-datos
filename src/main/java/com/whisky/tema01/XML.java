@@ -28,14 +28,14 @@ public class XML {
 
         try {
             // 1
-            //Empleado[] empleados = parseEmpleados('/' + EMPLEADOS);
-            //IO.println(Arrays.toString(empleados));
+            Empleado[] empleados = parseEmpleados('/' + EMPLEADOS);
+            IO.println(Arrays.toString(empleados));
 
             // 2
-            //printDepartmentStats(empleados);
+            printDepartmentStats(empleados);
 
             // 3
-            //printLibraryStats('/' + BIBLIOTECA);
+            printLibraryStats('/' + BIBLIOTECA);
 
             // 4
             validatePedidoTotal('/' + PEDIDOS, "P-1001");

@@ -17,16 +17,22 @@ public class JSON {
         final String ARCHIVO = "alumnos.json";
 
         try {
-            Alumno[] alumos = json.parseAsignaturas(ARCHIVO);
-            for (Alumno alumo : alumos) {
-                System.out.println(alumo);
-            }
+            // 5
+            Alumno[] alumnos = json.parseAsignaturas(ARCHIVO);
+
+            // 5a
+            printAlumnosNotaAlta(alumnos);
+
+            // 5b
+            printAlumnoNotaMediaMasAlta(alumnos);
+
         } catch (IOException e) {
             System.err.println("No se ha podido leer el archivo " + ARCHIVO);
         }
 
     }
 
+    // 5
     public Alumno[] parseAsignaturas(String file) throws IOException {
 
         Alumno[] alumnos;
@@ -65,5 +71,34 @@ public class JSON {
             }
         }
         return alumnos;
+    }
+
+    // 5a
+    public static void printAlumnosNotaAlta(Alumno[] alumnos) {
+
+        Nota[] notas;
+        double notaMasAlta = 0;
+        for (int i = 0; i < alumnos.length; i++) {
+            notas = alumnos[i].getNotas();
+            for (int j = 0; j < notas.length; j++) {
+                notaMasAlta = Double.max(notaMasAlta, notas[j].getNota());
+            }
+            IO.println("--- " + alumnos[i].getNombre() + " ---");
+            IO.println("Nota más alta: " + notaMasAlta);
+        }
+    }
+
+    // 5b
+    public static void printAlumnoNotaMediaMasAlta(Alumno[] alumnos) {
+
+        Nota[] notas;
+        int excellent;
+        double avg = 0;
+        for (int i = 0; i < alumnos.length; i++) {
+            notas = alumnos[i].getNotas();
+            for (int j = 0; j < notas.length; j++) {
+
+            }
+        }
     }
 }

@@ -27,4 +27,12 @@ public class Nota {
     public void setNota(double nota) {
         this.nota = nota;
     }
+
+    @Override
+    public String toString() {
+        return "Nota{" +
+                "asignatura='" + asignatura + '\'' +
+                ", nota=" + nota +
+                '}';
+    }
 }
