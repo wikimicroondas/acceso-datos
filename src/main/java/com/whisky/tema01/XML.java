@@ -38,8 +38,7 @@ public class XML {
             printLibraryStats('/' + BIBLIOTECA);
 
             // 4
-
-
+            //
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
             System.err.println("Error al procesar el fichero: " + EMPLEADOS + e.getMessage());
@@ -124,7 +123,7 @@ public class XML {
 
         try (InputStream is = XML.class.getResourceAsStream(path)) {
             if (is == null) {
-                throw new FileNotFoundException("File not found: " + path);
+                throw new FileNotFoundException("No se ha encontrado: " + path);
             }
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -160,5 +159,58 @@ public class XML {
     }
 
     // 4
+    public static void validatePedidoTotal(String path, String targetId)
+            throws IOException, ParserConfigurationException, SAXException {
+        try (InputStream is = XML.class.getResourceAsStream(path)) {
+            if (is == null){
+                throw new FileNotFoundException("No se ha encontrado: " + path);
+            }
 
+            Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+            dom.getDocumentElement().normalize();
+
+            NodeList pedidos = dom.getElementsByTagName("pedido");
+
+            for (int i = 0; i < pedidos.getLength(); i++) {
+                Element pedido = (Element) pedidos.item(i);
+
+                if (!pedido.getAttribute("id").equals(targetId)) {
+                    continue;
+                }
+
+                System.out.println("--- Order ID: " + targetId + " ---");
+                NodeList items = pedido.getElementsByTagName("item");
+                double calculatedTotal = 0.0;
+
+                for (int j = 0; j < items.getLength(); j++) {
+                    Element item = (Element) items.item(j);
+
+                    String descripcion = item.getElementsByTagName("descripcion")
+                            .item(0).getTextContent().trim();
+                    double cantidad = Double.parseDouble(
+                            item.getElementsByTagName("cantidad").item(0).getTextContent().trim()
+                    );
+                    double precioUnit = Double.parseDouble(
+                            item.getElementsByTagName("precioUnitario").item(0).getTextContent().trim()
+                    );
+
+                    calculatedTotal += (cantidad * precioUnit);
+                    System.out.printf("- %s | Qty: %.0f | Unit Price: %.2f%n", descripcion, cantidad, precioUnit);
+                }
+
+                double xmlTotal = Double.parseDouble(
+                        pedido.getElementsByTagName("total").item(0).getTextContent().trim()
+                );
+
+                System.out.printf("%nTotal Calculado: %.2f | Total del documento: %.2f%n", calculatedTotal, xmlTotal);
+
+                // Float comparison using epsilon for precision safety
+                boolean isValid = Math.abs(calculatedTotal - xmlTotal) < 0.001;
+                IO.println("Status de validación: " + (isValid ? "VÁLIDO" : "NO VÁLIDO"));
+
+                return;
+            }
+            IO.println("Order ID Solicitado [" + targetId + "] no se ha encontrado.");
+        }
+    }
 }
