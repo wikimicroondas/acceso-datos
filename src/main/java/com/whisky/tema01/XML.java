@@ -28,20 +28,20 @@ public class XML {
 
         try {
             // 1
-            Empleado[] empleados = parseEmpleados('/' + EMPLEADOS);
-            IO.println(Arrays.toString(empleados));
+            //Empleado[] empleados = parseEmpleados('/' + EMPLEADOS);
+            //IO.println(Arrays.toString(empleados));
 
             // 2
-            printDepartmentStats(empleados);
+            //printDepartmentStats(empleados);
 
             // 3
-            printLibraryStats('/' + BIBLIOTECA);
+            //printLibraryStats('/' + BIBLIOTECA);
 
             // 4
-            //
+            validatePedidoTotal('/' + PEDIDOS, "P-1001");
 
         } catch (IOException | ParserConfigurationException | SAXException e) {
-            System.err.println("Error al procesar el fichero: " + EMPLEADOS + e.getMessage());
+            System.err.println("Error al procesar el fichero: " + e.getMessage());
         }
     }
 
@@ -166,7 +166,10 @@ public class XML {
                 throw new FileNotFoundException("No se ha encontrado: " + path);
             }
 
-            Document dom = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document dom = builder.parse(is);
+
             dom.getDocumentElement().normalize();
 
             NodeList pedidos = dom.getElementsByTagName("pedido");
